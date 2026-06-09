@@ -2,6 +2,9 @@ cabal-version:       2.4
 name:                isacle
 version:             0.1
 license:             MIT
+synopsis:            ISA-agnostic Clash CPU core building blocks
+description:         Generic Clash modules extracted from clavr for building CPU cores.
+category:            Hardware
 author:              Jonathan Fraser <jonathanfras@gmail.com>
 maintainer:          Jonathan Fraser <jonathanfras@gmail.com>
 build-type:          Simple
@@ -51,8 +54,8 @@ common common-options
     -fno-unbox-small-strict-fields
     -fno-unbox-strict-fields
   build-depends:
-    base,
-    clash-prelude >= 1.8.4 && < 1.10,
+    base >= 4.12 && < 4.22,
+    clash-prelude >= 1.8.4 && < 1.11,
     ghc-typelits-natnormalise,
     ghc-typelits-extra,
     ghc-typelits-knownnat
@@ -72,20 +75,6 @@ library
     Core.Periph.GPIO
   default-language: Haskell2010
 
-executable clash
-  main-is: bin/Clash.hs
-  default-language: Haskell2010
-  build-depends: base, clash-ghc, isacle
-  if !os(Windows)
-    ghc-options: -dynamic
-
-executable clashi
-  main-is: bin/Clashi.hs
-  default-language: Haskell2010
-  build-depends: base, clash-ghc, isacle
-  if !os(Windows)
-    ghc-options: -dynamic
-
 test-suite test-library
   import: common-options
   default-language: Haskell2010
@@ -98,7 +87,7 @@ test-suite test-library
     Tests.Core.Harvard.Pipeline
     Tests.Core.GPIO
   build-depends:
-    base,
+    base >= 4.12 && < 4.22,
     isacle,
     hedgehog,
     tasty >= 1.2 && < 1.6,

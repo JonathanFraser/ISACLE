@@ -16,12 +16,5 @@ including:
 ## Building
 
 ```bash
-cabal test test-library
-```
-
-## Running Clash
-
-```bash
-cabal run clash -- --help
-cabal run clashi -- --help
+stack test
 ```
