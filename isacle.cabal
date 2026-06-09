@@ -58,7 +58,9 @@ common common-options
     clash-prelude >= 1.8.4 && < 1.11,
     ghc-typelits-natnormalise,
     ghc-typelits-extra,
-    ghc-typelits-knownnat
+    ghc-typelits-knownnat,
+    template-haskell >= 2.16,
+    bytestring
 
 library
   import: common-options
@@ -66,13 +68,19 @@ library
   exposed-modules:
     Core
     Core.ALU
+    Core.Bus
     Core.Decode
     Core.Memory
+    Core.TH
     Core.Harvard
     Core.Harvard.ISA
     Core.Harvard.CPU
     Core.Harvard.Pipeline
     Core.Periph.GPIO
+    Core.Periph.Interrupt
+    Core.Periph.Timer
+    Core.Periph.UART
+    Core.Periph.DMA
   default-language: Haskell2010
 
 test-suite test-library
@@ -86,6 +94,9 @@ test-suite test-library
     Tests.Core.Harvard.ISA
     Tests.Core.Harvard.Pipeline
     Tests.Core.GPIO
+    Tests.Core.Periph.Timer
+    Tests.Core.Periph.UART
+    Tests.Core.Periph.DMA
   build-depends:
     base >= 4.12 && < 4.22,
     isacle,
