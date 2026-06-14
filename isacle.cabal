@@ -25,7 +25,10 @@ common common-options
     DeriveTraversable
     DerivingStrategies
     FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
     InstanceSigs
+    MultiParamTypeClasses
     KindSignatures
     LambdaCase
     NamedFieldPuns
@@ -36,6 +39,7 @@ common common-options
     ScopedTypeVariables
     StandaloneDeriving
     TupleSections
+    AllowAmbiguousTypes
     TypeApplications
     TypeFamilies
     TypeOperators
@@ -60,28 +64,70 @@ common common-options
     ghc-typelits-extra,
     ghc-typelits-knownnat,
     template-haskell >= 2.16,
-    bytestring
+    bytestring,
+    containers >= 0.6,
+    transformers >= 0.5
 
 library
   import: common-options
   hs-source-dirs: src
   exposed-modules:
-    Core
-    Core.ALU
-    Core.Bus
-    Core.Decode
-    Core.Memory
-    Core.TH
-    Core.Harvard
-    Core.Harvard.ISA
-    Core.Harvard.CPU
-    Core.Harvard.Pipeline
-    Core.Periph.GPIO
-    Core.Periph.Interrupt
-    Core.Periph.Timer
-    Core.Periph.UART
-    Core.Periph.DMA
+    Isacle
+    Isacle.ALU
+    Isacle.Bus
+    Isacle.Decode
+    Isacle.Memory
+    Isacle.TH
+    Isacle.Harvard
+    Isacle.Harvard.ISA
+    Isacle.Harvard.CPU
+    Isacle.Harvard.Pipeline
+    Isacle.Periph.GPIO
+    Isacle.Periph.Interrupt
+    Isacle.Periph.Timer
+    Isacle.Periph.UART
+    Isacle.Periph.DMA
+    Isacle.System
+    Isacle.System.Spec
+    Isacle.System.Periph
+    Isacle.System.BusDef
+    Isacle.System.BusArch
+    Isacle.System.Builder
+    Isacle.System.Circuit
+    Isacle.System.Generate
+    Isacle.System.Synth
+    Isacle.CPU.Dummy
   default-language: Haskell2010
+
+-- Clash synthesis executable: cabal run isacle:clash -- Example.SimpleBusSynth --vhdl
+executable clash
+  default-language: Haskell2010
+  main-is: bin/Clash.hs
+  build-depends: base, clash-ghc, isacle, isacle-examples
+  if !os(Windows)
+    ghc-options: -dynamic
+
+library isacle-examples
+  import: common-options
+  default-language: Haskell2010
+  hs-source-dirs: example
+  exposed-modules:
+    Example.SimpleBusSynth
+    Example.CpuBusSynth
+  build-depends:
+    base >= 4.12 && < 4.22,
+    clash-prelude >= 1.8.4 && < 1.11,
+    isacle
+
+executable test-dsl
+  import: common-options
+  default-language: Haskell2010
+  hs-source-dirs: tests
+  main-is: TestDSL.hs
+  build-depends:
+    base >= 4.12 && < 4.22,
+    isacle,
+    clash-prelude >= 1.8.4 && < 1.11
 
 test-suite test-library
   import: common-options
@@ -91,12 +137,13 @@ test-suite test-library
   ghc-options: -threaded
   main-is: unittests.hs
   other-modules:
-    Tests.Core.Harvard.ISA
-    Tests.Core.Harvard.Pipeline
-    Tests.Core.GPIO
-    Tests.Core.Periph.Timer
-    Tests.Core.Periph.UART
-    Tests.Core.Periph.DMA
+    Tests.Isacle.Harvard.ISA
+    Tests.Isacle.Harvard.Pipeline
+    Tests.Isacle.GPIO
+    Tests.Isacle.Periph.Timer
+    Tests.Isacle.Periph.UART
+    Tests.Isacle.Periph.DMA
+    Tests.Isacle.System.Bus
   build-depends:
     base >= 4.12 && < 4.22,
     isacle,

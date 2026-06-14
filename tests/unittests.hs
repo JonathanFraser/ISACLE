@@ -2,19 +2,21 @@ import Prelude
 
 import Test.Tasty
 
-import qualified Tests.Core.Harvard.ISA
-import qualified Tests.Core.Harvard.Pipeline
-import qualified Tests.Core.GPIO
-import qualified Tests.Core.Periph.Timer
-import qualified Tests.Core.Periph.UART
-import qualified Tests.Core.Periph.DMA
+import qualified Tests.Isacle.Harvard.ISA
+import qualified Tests.Isacle.Harvard.Pipeline
+import qualified Tests.Isacle.GPIO
+import qualified Tests.Isacle.Periph.Timer
+import qualified Tests.Isacle.Periph.UART
+import qualified Tests.Isacle.Periph.DMA
+import qualified Tests.Isacle.System.Bus
 
 main :: IO ()
 main = defaultMain $ testGroup "."
-  [ Tests.Core.Harvard.ISA.isaTests
-  , Tests.Core.Harvard.Pipeline.pipelineTests
-  , Tests.Core.GPIO.gpioTests
-  , Tests.Core.Periph.Timer.timerTests
-  , Tests.Core.Periph.UART.uartTests
-  , Tests.Core.Periph.DMA.dmaTests
+  [ Tests.Isacle.Harvard.ISA.isaTests
+  , Tests.Isacle.Harvard.Pipeline.pipelineTests
+  , Tests.Isacle.GPIO.gpioTests
+  , Tests.Isacle.Periph.Timer.timerTests
+  , Tests.Isacle.Periph.UART.uartTests
+  , Tests.Isacle.Periph.DMA.dmaTests
+  , Tests.Isacle.System.Bus.busTests
   ]
